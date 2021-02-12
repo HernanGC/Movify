@@ -1,5 +1,4 @@
 import React from 'react';
-// import 'bootswatch/dist/lux/bootstrap.min.css';
 
 
 class NavbarComponent extends React.Component {
