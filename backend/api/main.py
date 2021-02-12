@@ -9,6 +9,7 @@ app = Flask(__name__)
 def search_handler():
     if request.method == 'POST':
         data = request.json
+        print(data)
         print(data['movie'])
         request_helper = RequestHelper()
         request_helper.set_search_request(data['movie'])
