@@ -4,7 +4,8 @@ import IndexComponent from './components/IndexComponent';
 import NavbarComponent from './components/NavbarComponent';
 import MovieComponent from './components/MovieComponent';
 import 'bootswatch/dist/lux/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.min.js';
+import 'bootstrap/dist/js/bootstrap.js';
+
 import {
    BrowserRouter as Router,
    Switch,
