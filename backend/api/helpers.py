@@ -12,7 +12,8 @@ class RequestHelper:
         self.response = {}
 
     def set_response(self, res):
-        self.response = res
+        self.response = += res
+        print(f'ACA ${self.response}'))
     
     def get_response(self):
         return self.response
