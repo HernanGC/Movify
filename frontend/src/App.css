@@ -1,14 +1,18 @@
+.root {
+  background-color: #000 !important;
+}
 .App {
   text-align: center;
 }
 .movie-container{
   position: absolute;
   text-align: center;
-  transition-duration: 0.2s;
+  transition-duration: 0.3s;
   cursor: pointer;
+  padding: 0 !important;
 }
 .movie-container:hover {
-  transform: scale(1.1);
+  transform: scale(0.9);
   z-index: 5;
 }
 .movie-title {

@@ -4,6 +4,8 @@ import IndexComponent from './components/IndexComponent';
 import NavbarComponent from './components/NavbarComponent';
 import MovieComponent from './components/MovieComponent';
 import 'bootswatch/dist/lux/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.js';
+
 import {
    BrowserRouter as Router,
    Switch,
@@ -17,8 +19,10 @@ function App() {
     <div className="App">
       <NavbarComponent />
       <IndexComponent name='Movify' />
-      <div className="row">
-        <MovieComponent />
+      <div className='container-fluid'>
+        <div className="row justify-content-md-center">
+          <MovieComponent />
+        </div>
       </div>
     </div>
   );

@@ -16,16 +16,17 @@ export default function MovieComponent() {
             },
             body: JSON.stringify(params)
         });
-
+        
         const responseJson = await response.json();
-        if (responseJson.Search) {
-            setMovies(responseJson.Search)
-            console.log(responseJson.Search);
+        console.log(responseJson)
+        if (responseJson) {
+            setMovies(responseJson)
+            // console.log(typeof responseJson);
         }
         return responseJson;
     }
 
-    console.log(movies);
+    // console.log(movies);
 
     useEffect(() => {
         getMovies();
@@ -34,8 +35,8 @@ export default function MovieComponent() {
     return (
         <>
          {Object.keys(movies).map(key =>
-        <div className="col-2 movie-container">
-            <p className="movie-title">{movies[key].Title}</p>
+        <div className="col-xs-2 col-sm-6 col-md-4 col-lg-3 col-xl-2 movie-container">
+            {/* <p className="movie-title">{movies[key].Title}</p> */}
             <img src={movies[key].Poster} alt="" className="movie-img"/>
         </div> )}
         </>    
