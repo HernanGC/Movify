@@ -1,5 +1,6 @@
 from flask import Flask, request
 from flask_cors import CORS
+from flask import jsonify
 import sys, requests
 from helpers import RequestHelper
 # from flask import request
@@ -12,8 +13,10 @@ def search_handler():
     if request.method == 'POST':
         data = request.json
         request_helper = RequestHelper()
-        request_helper.set_search_request(data['movie'])
-        return request_helper.get_response()
+        request_helper.set_search_request(data['movie'], 2)
+        # print()
+        print(request_helper.get_response())
+        return jsonify(request_helper.get_response())
     else:
         return 'Hello'
 

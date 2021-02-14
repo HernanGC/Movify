@@ -35,7 +35,7 @@ export default function MovieComponent() {
     return (
         <>
          {Object.keys(movies).map(key =>
-        <div className="col-xs-2 col-sm-6 col-md-4 col-lg-3 col-xl-2 movie-container">
+        <div className="col-xs-12 col-sm-6 col-md-4 col-lg-3 col-xl-2 movie-container">
             {/* <p className="movie-title">{movies[key].Title}</p> */}
             <img src={movies[key].Poster} alt="" className="movie-img"/>
         </div> )}
