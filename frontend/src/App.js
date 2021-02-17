@@ -1,3 +1,4 @@
+import React, {useState, useEffect} from 'react';
 import logo from './logo.svg';
 import './App.css';
 import IndexComponent from './components/IndexComponent';
@@ -15,13 +16,44 @@ import {
 
 
 function App() {
+  const [movies, setMovies] = useState({});
+  const [searchValue, setSearchValue] = useState('');
+    const getMovies = async function () {
+      // if (searchValue) {
+         let params = {
+            movie: searchValue
+        };
+        const url = 'http://127.0.0.1:5000/api/movify/v1/search';
+
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(params)
+        });
+        
+        const responseJson = await response.json();
+        console.log(responseJson)
+        if (responseJson) {
+            setMovies(responseJson)
+        }
+        return responseJson;
+      // }
+       
+    }
+
+    useEffect(() => {
+        getMovies();
+    }, [searchValue]);
+
   return (
     <div className="App">
-      <NavbarComponent />
+      <NavbarComponent searchValue={searchValue} setSearchValue={setSearchValue}/>
       <IndexComponent name='Movify' />
       <div className='container-fluid'>
         <div className="row justify-content-md-center">
-          <MovieComponent />
+          <MovieComponent movies={movies}/>
         </div>
       </div>
     </div>

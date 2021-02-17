@@ -8,7 +8,7 @@ class RequestHelper:
     SEARCH_TYPES = {
 
     }
-
+ 
     def __init__(self):
         self.api_key = self.API_KEY
         self.base_url = self.BASE_URL
