@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import logo from './logo.svg';
+import Spinner from './Spinner.svg';
 import './App.css';
 import IndexComponent from './components/IndexComponent';
 import NavbarComponent from './components/NavbarComponent';
@@ -18,8 +18,8 @@ import {
 function App() {
   const [movies, setMovies] = useState({});
   const [searchValue, setSearchValue] = useState('');
+
     const getMovies = async function () {
-      // if (searchValue) {
          let params = {
             movie: searchValue
         };
@@ -34,26 +34,27 @@ function App() {
         });
         
         const responseJson = await response.json();
-        console.log(responseJson)
+        // console.log(responseJson)
         if (responseJson) {
             setMovies(responseJson)
         }
+
         return responseJson;
-      // }
-       
     }
 
     useEffect(() => {
         getMovies();
     }, [searchValue]);
 
+  console.log(movies);
+
   return (
     <div className="App">
       <NavbarComponent searchValue={searchValue} setSearchValue={setSearchValue}/>
-      <IndexComponent name='Movify' />
+      {/* <IndexComponent name='Movify' /> */}
       <div className='container-fluid'>
         <div className="row justify-content-md-center">
-          <MovieComponent movies={movies}/>
+          <MovieComponent movies={movies} Spinner={Spinner}/>
         </div>
       </div>
     </div>

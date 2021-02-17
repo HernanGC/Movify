@@ -47,3 +47,7 @@
 .hidden {
   opacity: 0;
 }
+
+.spinner {
+  margin: 7rem auto;
+}
