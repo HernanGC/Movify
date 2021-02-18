@@ -4,8 +4,11 @@ import './App.css';
 import IndexComponent from './components/IndexComponent';
 import NavbarComponent from './components/NavbarComponent';
 import MovieComponent from './components/MovieComponent';
-import 'bootswatch/dist/lux/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.js';
+import 'bootswatch/dist/lux/bootstrap.min.css';
+import 'popper.js';
+import 'jquery';
+
 
 import {
    BrowserRouter as Router,
