@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function SeachComponent(props) {
 
-    const handleSubmit = function (e, obj) {
+    const handleSubmit = function (e) {
         e.preventDefault();
         props.setSearchValue(e.target.childNodes[0].value)
     }
@@ -11,7 +11,7 @@ export default function SeachComponent(props) {
         <>
         <form
         className="movie-search-form"  
-        onSubmit={(e) => handleSubmit(e, this)}>
+        onSubmit={(e) => handleSubmit(e)}>
             <input 
             className="form-control" 
             type="search" 
