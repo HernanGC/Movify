@@ -2,7 +2,6 @@ import React from 'react';
 
 export default function MovieComponent(props) {
 
-    const coso = 'e';
     if (props.movies.length > 0) {
         return (
             <>

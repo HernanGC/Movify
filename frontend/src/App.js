@@ -4,9 +4,7 @@ import './App.css';
 import IndexComponent from './components/IndexComponent';
 import NavbarComponent from './components/NavbarComponent';
 import MovieComponent from './components/MovieComponent';
-// import 'bootstrap/dist/js/bootstrap.min.js';
 import 'bootswatch/dist/lux/bootstrap.min.css';
-
 
 import {
    BrowserRouter as Router,
@@ -17,6 +15,7 @@ import {
 
 
 function App() {
+
   const [movies, setMovies] = useState({});
   const [searchValue, setSearchValue] = useState('');
 
@@ -33,13 +32,11 @@ function App() {
             },
             body: JSON.stringify(params)
         });
-        
+
         const responseJson = await response.json();
-        // console.log(responseJson)
         if (responseJson) {
             setMovies(responseJson)
         }
-
         return responseJson;
     }
 
@@ -47,7 +44,6 @@ function App() {
         getMovies();
     }, [searchValue]);
 
-  console.log(movies);
 
   return (
     <div className="App">
