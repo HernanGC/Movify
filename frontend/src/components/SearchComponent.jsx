@@ -14,7 +14,7 @@ export default function SeachComponent(props) {
         type="search" 
         placeholder="Search" 
         aria-label="Search"
-        onChange= {(e) => handleSubmit(e)}/>
+        onKeyUp={(e) => handleSubmit(e)}/>
         </>
     )
 }

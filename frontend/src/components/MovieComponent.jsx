@@ -15,20 +15,8 @@ export default function MovieComponent(props) {
             </>    
         );
     } else {
-        console.log('si')
         return (
-            <>
             <img className="spinner" src={props.Spinner} alt="spinner" />
-            {/* <div className="loader"> */}
-            {/* <Loader
-              type="Puff"
-              color="#00BFFF"
-              height={100}
-              width={100}
-              timeout={3000} //3 secs
-            /> */}
-            {/* </div> */}
-            </>
           );
     }
     
