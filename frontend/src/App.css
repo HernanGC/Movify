@@ -38,67 +38,49 @@
   filter: brightness(45%);
   transition-duration: 0.5s;
 }
-
+@media only screen and (min-width: 492px) {
+  div.container-fluid form.movie-search-form {
+    width: 50%;
+  }
+}
+@media only screen and (min-width: 992px) {
+  div.container-fluid form.movie-search-form {
+    width: 54%;
+  }
+}
+@media only screen and (min-width: 1150px) {
+  div.container-fluid form.movie-search-form {
+    width: 60%;
+  }
+}
+@media only screen and (min-width: 1300px) {
+  div.container-fluid form.movie-search-form {
+    width: 65%;
+  }
+}
+@media only screen and (min-width: 1400px) {
+  div.container-fluid form.movie-search-form {
+    width: 68%;
+  }
+}
+@media only screen and (min-width: 1500px) {
+  div.container-fluid form.movie-search-form {
+    width: 71%;
+  }
+}
+@media only screen and (min-width: 1700px) {
+  div.container-fluid form.movie-search-form {
+    width: 75%;
+  }
+}
+@media only screen and (min-width: 1900px) {
+  div.container-fluid form.movie-search-form {
+    width: 77%;
+  }
+}
 .hidden {
   opacity: 0;
 }
 .spinner {
   margin: 7rem auto;
-}
-@media only screen and (min-width: 320px) {
-  div.container-fluid input.movie-search-input {
-    width: 48%;
-  }
-  div.container-fluid a.navbar-brand {
-    margin: 0;
-  }
-}
-@media only screen and (min-width: 492px) {
-  div.container-fluid input.movie-search-input {
-    width: 50%;
-  }
-}
-@media only screen and (min-width: 992px) {
-  div.container-fluid input.movie-search-input {
-    width: 54%;
-  }
-  div.container-fluid a.navbar-brand {
-    margin: 0 2rem 0 0;
-  }
-}
-@media only screen and (min-width: 1150px) {
-  div.container-fluid input.movie-search-input {
-    width: 60%;
-  }
-}
-@media only screen and (min-width: 1300px) {
-  div.container-fluid input.movie-search-input {
-    width: 65%;
-  }
-}
-@media only screen and (min-width: 1400px) {
-  div.container-fluid input.movie-search-input {
-    width: 68%;
-  }
-}
-@media only screen and (min-width: 1500px) {
-  div.container-fluid input.movie-search-input {
-    width: 70%;
-  }
-}
-@media only screen and (min-width: 1700px) {
-  div.container-fluid input.movie-search-input {
-    width: 74%;
-  }
-}
-@media only screen and (min-width: 1800px) {
-  div.container-fluid input.movie-search-input {
-    width: 75%;
-    /* margin: 0 5px 0 0; */
-  }
-}
-@media only screen and (min-width: 1900px) {
-  div.container-fluid input.movie-search-input {
-    width: 77%;
-  }
 }
