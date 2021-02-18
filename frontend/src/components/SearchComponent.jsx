@@ -2,19 +2,22 @@ import React from 'react';
 
 export default function SeachComponent(props) {
 
-    const handleSubmit = function (e) {
+    const handleSubmit = function (e, obj) {
         e.preventDefault();
-        props.setSearchValue(e.target.value)
+        props.setSearchValue(e.target.childNodes[0].value)
     }
 
     return (
         <>
-        <input 
-        className="form-control movie-search-input" 
-        type="search" 
-        placeholder="Search" 
-        aria-label="Search"
-        onKeyUp={(e) => handleSubmit(e)}/>
+        <form
+        className="movie-search-form"  
+        onSubmit={(e) => handleSubmit(e, this)}>
+            <input 
+            className="form-control" 
+            type="search" 
+            placeholder="Search" 
+            aria-label="Search"/>
+        </form>
         </>
     )
 }
