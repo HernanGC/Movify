@@ -5,7 +5,7 @@ from connection import DatabaseConnection
 
 # Establezco la coneccion a mi base de datos 
 database = DatabaseConnection()
-engine = DatabaseConnection.make_engine()
+engine = database.make_engine()
 database.make_connection()
 
 Session = sessionmaker(bind=engine)
