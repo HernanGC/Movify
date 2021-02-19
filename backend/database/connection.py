@@ -14,9 +14,10 @@ class DatabaseConnection:
 
     def make_engine(self):
         '''
-        Create a database connection
+        Create and return the database connection
         '''
         self.engine = create_engine(f'mysql://{self.user}:{self.pwd}@{self.host}/{self.db}', echo=True, pool_pre_ping=True)
+        return self.engine
 
 
     def make_connection(self):
