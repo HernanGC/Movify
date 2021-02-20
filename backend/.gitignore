@@ -1,2 +1,6 @@
 venv/
 dbutils.py
+
+__pycache__/
+*.so
+*.pyc
