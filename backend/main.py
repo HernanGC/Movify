@@ -4,7 +4,13 @@ from flask import jsonify
 from flask_cors import CORS
 
 import sys, requests
-from helper import RequestHelper
+from importlib import import_module
+from api.helper import RequestHelper
+# import database
+# import database.models
+from database.models.Search import Search
+from database.models.main import get_search 
+# from database.models import Search
 
 
 app = Flask(__name__)
@@ -35,4 +41,12 @@ def test_handler():
             'res': res_json,
         }
     return 'fail'
+
+@app.route('/api/test', methods=['GET', 'POST'])
+def test():
+    search = get_search()
+    return {
+        'obj': 'hello',
+        'search': search
+    }
 
