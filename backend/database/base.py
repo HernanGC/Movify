@@ -1,6 +1,6 @@
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from connection import DatabaseConnection
+from .connection import DatabaseConnection
 
 
 # Establezco la coneccion a mi base de datos 

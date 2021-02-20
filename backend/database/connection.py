@@ -1,14 +1,15 @@
 from sqlalchemy import create_engine
-from db.utils import dbUtils
+from .dbutils import dbUtils
 import pymysql
 
 class DatabaseConnection:
 
     def __init__(self):
-        self.host = dbUtils.get_host()
-        self.pwd  = dbUtils.get_pwd()
-        self.user = dbUtils.get_user()
-        self.db   = dbUtils.get_db_name()
+        self.dbUtils = dbUtils()
+        self.host = self.dbUtils.get_host()
+        self.pwd  = self.dbUtils.get_pwd()
+        self.user = self.dbUtils.get_user()
+        self.db   = self.dbUtils.get_db_name()
         self.engine = None
 
 
@@ -16,7 +17,7 @@ class DatabaseConnection:
         '''
         Create and return the database connection
         '''
-        self.engine = create_engine(f'mysql://{self.user}:{self.pwd}@{self.host}/{self.db}', echo=True, pool_pre_ping=True)
+        self.engine = create_engine(f'mysql+pymysql://{self.user}:{self.pwd}@{self.host}/{self.db}', echo=True, pool_pre_ping=True)
         return self.engine
 
 
