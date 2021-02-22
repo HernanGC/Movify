@@ -5,7 +5,8 @@ from flask_cors import CORS
 
 import sys, requests
 
-from models.Request import RequestModel
+from models.Omdb import Omdb
+from models.Scraper import Scraper
 from database.resourceModels.Search import Search, get_search
 from database.helpers.Data import DataHelper
 
@@ -14,7 +15,8 @@ app = Flask(__name__)
 CORS(app)
 
 
-REQUEST_MODEL = RequestModel()
+OMDB = Omdb()
+SCRAPER = Scraper()
 DATA_HELPER = DataHelper()
 # SEARCH = Search()
 
@@ -23,8 +25,8 @@ DATA_HELPER = DataHelper()
 def search_handler():
     if request.method == 'POST':
         data = request.json
-        REQUEST_MODEL.set_search_request(data['movie'], 2)
-        return jsonify(REQUEST_MODEL.get_response())
+        OMDB.set_search_request(data['movie'], 2)
+        return jsonify(OMDB.get_response())
     else:
         return 'Hello'
 
@@ -32,23 +34,18 @@ def search_handler():
 @app.route('/api/movify/v1/test', methods=['GET', 'POST'])
 def test_handler():
     if request.method == 'GET':
-        res = REQUEST_MODEL.test_request_movie(request.args.get('movie'))
+        res = OMDB.test_request_movie(request.args.get('movie'))
         res_json = res
         return {
-            'tv_show_details': REQUEST_MODEL.test_request_details(res_json['Search'][-3]['imdbID']),
-            'movie_details': REQUEST_MODEL.test_request_details(res_json['Search'][0]['imdbID']),
+            'tv_show_details': OMDB.test_request_details(res_json['Search'][-3]['imdbID']),
+            'movie_details': OMDB.test_request_details(res_json['Search'][0]['imdbID']),
             'res': res_json,
         }
     return 'fail'
 
 @app.route('/api/test', methods=['GET', 'POST'])
 def test():
-    search = REQUEST_MODEL.test_request_movie(request.args.get('movie'))
-    REQUEST_MODEL.create_search(search['Search'])
-    res = get_search()
-    # search = SEARCH.get_search()
     return {
-        'obj': 'hello',
-        'search': search['Search']
+        'obj': SCRAPER.get_most_popular()
     }
 
