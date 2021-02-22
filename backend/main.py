@@ -52,11 +52,13 @@ def test_handler():
 
 @app.route('/api/test', methods=['GET', 'POST'])
 def test():
-    SCRAPER.init()
+    # SCRAPER.init()
+    # SCRAPER.set_genres_from_html()
     return {
-        'top_movies': SCRAPER.get_top_movies(),
-        'top_shows': SCRAPER.get_top_shows(),
-        'popular_movies': SCRAPER.get_most_popular_movies(),
-        'popular_shows': SCRAPER.get_most_popular_shows()
+        'ok': SCRAPER.get_genres_ids_from_html(),
+        # 'top_movies': SCRAPER.set_genres_from_html(),
+        # 'top_shows': SCRAPER.get_top_shows(5),
+        # 'popular_movies': SCRAPER.get_most_popular_movies(5),
+        # 'popular_shows': SCRAPER.get_most_popular_shows(5)
     }
 
