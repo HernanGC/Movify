@@ -5,7 +5,7 @@ from database.resourceModels.Search import Search
 from database.base import sess
 
 
-class RequestModel:
+class Omdb:
 
 
     API_KEY = 'dffc746e'
@@ -16,6 +16,11 @@ class RequestModel:
         self.api_key = self.API_KEY
         self.base_url = self.BASE_URL
         self.response = []
+
+    
+    def get_request(self, url):
+        res = requests.get(url)
+        return res.status_code
 
 
     def set_response(self, res):
