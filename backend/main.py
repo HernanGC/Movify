@@ -21,6 +21,13 @@ DATA_HELPER = DataHelper()
 # SEARCH = Search()
 
 
+@app.route('/api/movify/v1/home', methods=['GET'])
+def home():
+    SCRAPER.init()
+    return {
+        'data': 'to-do'
+    }
+
 @app.route('/api/movify/v1/search', methods=['GET', 'POST'])
 def search_handler():
     if request.method == 'POST':
@@ -45,7 +52,11 @@ def test_handler():
 
 @app.route('/api/test', methods=['GET', 'POST'])
 def test():
+    SCRAPER.init()
     return {
-        'obj': SCRAPER.get_most_popular_movies()
+        'top_movies': SCRAPER.get_top_movies(),
+        'top_shows': SCRAPER.get_top_shows(),
+        'popular_movies': SCRAPER.get_most_popular_movies(),
+        'popular_shows': SCRAPER.get_most_popular_shows()
     }
 
