@@ -46,6 +46,6 @@ def test_handler():
 @app.route('/api/test', methods=['GET', 'POST'])
 def test():
     return {
-        'obj': SCRAPER.get_top_250(5)
+        'obj': SCRAPER.get_most_popular()
     }
 
