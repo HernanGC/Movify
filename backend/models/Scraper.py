@@ -27,37 +27,6 @@ class Scraper:
         self.movie_genres        = {}
         self.movie_genres_two    = {}
         self.show_genres         = {}
-
-
-    def get_genres_ids_from_html(self):
-        imdb_id_list = []
-        self.set_genres_from_html()
-        urls_list = self.movie_genres_urls
-        movie_genre_titles = self.get_genre_names_from_urls(urls_list)
-        for genre in movie_genre_titles:
-            imdb_id_list = []
-            url = self.movie_genres[genre]
-            genre_html = self.get_html(url)
-            soup = BeautifulSoup(genre_html, 'html.parser')
-            title_results = soup.find_all(attrs={'class': 'lister-item-header'})
-            for title in title_results:
-                title_href = title.a['href']
-                imdb_id = title_href.split('/')[2]
-                print('---')
-                print(imdb_id)
-                imdb_id_list.append(imdb_id)
-            self.movie_genres_two[genre] = imdb_id_list
-        return self.movie_genres_two
-    
-    
-    def get_genre_names_from_urls(self, title_urls):
-        titles = []
-        for title in title_urls:
-            split_title = title.split('=')[1].split('&')[0]
-            if split_title in self.important_movies:
-                self.movie_genres[split_title] = title
-                titles.append(split_title)
-        return titles
          
 
     def init(self):
@@ -65,6 +34,7 @@ class Scraper:
         self.set_most_popular_shows()
         self.set_top_250_movies()
         self.set_top_250_shows()
+        self.set_genres_from_html()
 
 
     def set_top_250_movies(self, top=250):
@@ -135,10 +105,7 @@ class Scraper:
         html = self.get_html(self.MOVIE_SHOWS_GENRES_URL)
         soup = BeautifulSoup(html, 'html.parser')
         genres = soup.find_all(attrs={'class': 'table-cell'})
-        index = 0
-        # TODO: Refactor this to a pythonic for loop using enumarate()
-        for genre in genres:
-            index += 1
+        for index, genre in enumerate(genres):
             if genre in {genres[0], genres[7], genres[14], genres[21], genres[28], genres[36], genres[44], genres[52]}:
                 continue
             elif index < 59:
@@ -151,4 +118,29 @@ class Scraper:
         return genre_list
 
 
-    # def set    
+    def get_genres_ids_from_html(self):
+        imdb_id_list = []
+        urls_list = self.movie_genres_urls
+        movie_genre_titles = self.get_genre_names_from_urls(urls_list)
+        for genre in movie_genre_titles:
+            imdb_id_list = []
+            url = self.movie_genres[genre]
+            genre_html = self.get_html(url)
+            soup = BeautifulSoup(genre_html, 'html.parser')
+            title_results = soup.find_all(attrs={'class': 'lister-item-header'})
+            for title in title_results:
+                title_href = title.a['href']
+                imdb_id = title_href.split('/')[2]
+                imdb_id_list.append(imdb_id)
+            self.movie_genres_two[genre] = imdb_id_list
+        return self.movie_genres_two
+    
+    
+    def get_genre_names_from_urls(self, title_urls):
+        titles = []
+        for title in title_urls:
+            split_title = title.split('=')[1].split('&')[0]
+            if split_title in self.important_movies:
+                self.movie_genres[split_title] = title
+                titles.append(split_title)
+        return titles

@@ -65,15 +65,7 @@ class Omdb:
         Get details result
         '''
         return requests.get(f'{self.base_url}i={movie_id}&apikey={self.api_key}').json()
-            
 
-    def create_search(self, obj):
-        sess.rollback()
-        for i in obj:
-            search = Search(i['Title'], i['Type'], i['Year'], i['imdbID'], i['Poster'])
-            sess.add(search)
-            sess.commit()
-            sess.close()
 
     
 
