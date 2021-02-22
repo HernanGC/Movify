@@ -7,30 +7,51 @@ from bs4 import BeautifulSoup
 class Scraper:
 
     BASE_URL = 'https://www.imdb.com/'
-    TOP_250_URL = 'chart/top/?ref_=nv_mv_250'
-    MOST_POPULAR_URL = 'chart/moviemeter/?ref_=nv_mv_mpm'
+    TOP_250_MOVIES_URL = 'chart/top/?ref_=nv_mv_250'
+    MOST_POPULAR_MOVIES_URL = 'chart/moviemeter/?ref_=nv_mv_mpm'
+    TOP_250_SHOWS_URL = 'chart/toptv/?ref_=nv_tvv_250'
+    MOST_POPULAR_SHOWS_URL = 'chart/tvmeter/?ref_=nv_tvv_mptv'
 
 
     def __init__(self):
-        self.top_250 = []
-        self.most_popular = []
+        self.top_250_movies = []
+        self.most_popular_movies = []
+        self.top_250_shows = []
+        self.most_popular_shows = []
 
 
-    def get_top_250(self, top=250):
-        html_doc = self.get_html(self.TOP_250_URL)
-        top_250_id_list = self.get_imdb_id_from_html(html_doc, self.top_250)
+    def get_top_250_movies(self, top=250):
+        return self.get_top_250(self.TOP_250_MOVIES_URL, top, self.top_250_movies)
+
+    
+    def get_top_250_shows(self, top=250):
+        return self.get_top_250(self.TOP_250_SHOWS_URL, top, self.top_250_shows)
+
+
+    def get_most_popular_movies(self, top=100):
+        return self.get_most_popular(self.MOST_POPULAR_MOVIES_URL, top, self.most_popular_movies)
+
+
+    def get_most_popular_shows(self, top=100):
+        return self.get_most_popular(self.MOST_POPULAR_SHOWS_URL, top, self.most_popular_shows)
+
+
+    def get_top_250(self, url, top, top_list):
+        html_doc = self.get_html(url)
+        top_250_id_list = self.get_imdb_id_from_html(html_doc, top_list)
         return top_250_id_list[:top]
+
+
+    def get_most_popular(self, url, top, popular_list):
+            html_doc = self.get_html(url)
+            most_popular_id_list = self.get_imdb_id_from_html(html_doc, popular_list)
+            return most_popular_id_list[:top]
 
 
     def get_html(self, search_url):
         return requests.get(self.BASE_URL+search_url).text
 
-
-    def get_most_popular(self, top=100):
-        html_doc = self.get_html(self.MOST_POPULAR_URL)
-        most_popular_id_list = self.get_imdb_id_from_html(html_doc, self.most_popular)
-        return most_popular_id_list[:top]
-
+    
     def get_imdb_id_from_html(self, html_doc, list_el):
         imdb_id_list = []
         try:
