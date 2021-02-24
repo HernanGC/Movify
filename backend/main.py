@@ -54,10 +54,10 @@ def test_handler():
 def test():
     SCRAPER.init()
     return {
-        'top_movies': SCRAPER.get_top_movies(5),
-        'top_shows': SCRAPER.get_top_shows(5),
-        'popular_movies': SCRAPER.get_most_popular_movies(5),
-        'popular_shows': SCRAPER.get_most_popular_shows(5),
+        'top_movies': SCRAPER.get_top_movies(10),
+        'top_shows': SCRAPER.get_top_shows(10),
+        'popular_movies': SCRAPER.get_most_popular_movies(10),
+        'popular_shows': SCRAPER.get_most_popular_shows(10),
         'movies_by_genre': SCRAPER.get_genres_ids_from_html()
     }
 
