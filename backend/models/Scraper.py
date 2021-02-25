@@ -16,20 +16,40 @@ class Scraper:
 
 
     def __init__(self):
-        self.attrs               = {'first_attrs': {'class': 'titleColumn'}, 'second_attrs': {'class': 'lister-item-header'}}
-        self.top_250_movies      = []
-        self.top_250_shows       = []
-        self.most_popular_movies = []
-        self.most_popular_shows  = []
-        self.movie_genres_urls   = []
-        self.shows_genres_urls   = []
-        self.important_movies    = ['action', 'adventure', 'comedy', 'documentary', 'family', 'sci-fi', 'thriller', 'western']
-        self.movie_genres        = {}
-        self.movie_genres_two    = {}
-        self.show_genres         = {}
+        self.attrs                 = {'first_attrs': {'class': 'titleColumn'}, 'second_attrs': {'class': 'lister-item-header'}}
+        # The "important" movie genres that will be scraped and later rendered in the front end. Might change in the future
+        self.important_movies      = ['action', 'adventure', 'comedy', 'documentary', 'family', 'sci-fi', 'thriller', 'western']
+        # Top 250 movies scraped from "chart/top/?ref_=nv_mv_250". Set by: "set_top_250_movies()"
+        self.top_250_movies        = []
+        # Top 250 tv shows scraped from "hart/toptv/?ref_=nv_tvv_250". Set by: "set_top_250_shows()"
+        self.top_250_shows         = []
+        # Top 100 popular movies scraped from "chart/moviemeter/?ref_=nv_mv_mpm". Set by: "set_most_popular_movies()"
+        self.most_popular_movies   = []
+        # Top 100 popular tv shows scraped from "chart/tvmeter/?ref_=nv_tvv_mptv". Set by: "set_most_popular_shows() "
+        self.most_popular_shows    = []
+        # Movie genres URLS scraped from "feature/genre/?ref_=nv_tv_gr". This sets around 50 Movie genres urls, and only 8 are actually used. Set by "set_movie_genres_urls()"
+        self.movie_genres_urls     = []
+        # Tv Shows genres URLS scraped from "feature/genre/?ref_=nv_tv_gr". This sets around 50 Tv Shows genres urls. Set by "set_shows_genres_urls()"
+        self.shows_genres_urls     = []
+        # Object composed by "movie_name": "movie_url". Set by "set_movie_genres_object()" in "get_genre_names_from_urls()"
+        self.movie_genres          = {}
+        # Object composed by "tv_show_name": "tv_show_url".
+        self.show_genres           = {}
+        # Object composed by "movie_genre": ["imdb_id_one", "imdb_id_two", "..."].
+        self.movie_genres_imdb_ids = {}
          
 
     def init(self):
+        '''
+        This function initiates the scraper and performs all the scraping needed in order to get the imdbIDs (from imdb.com) for:
+        - Historic Movie ranking (top 250)
+        - Historic Tv Shows ranking (top 250)
+        - Current most popular Movies (top 100)
+        - Current most popular Tv Shows (top 100)
+        - Movies by genres (50 by genre)
+        - Tv Shows by genres (50 by genre)
+        This ids will later be used to get data from each film from the omdbAPI
+        '''
         self.set_most_popular_movies()
         self.set_most_popular_shows()
         self.set_top_250_movies()
@@ -100,6 +120,14 @@ class Scraper:
             return False
 
 
+    def set_movie_genres_urls(self, urls):
+        self.movie_genres_urls = urls
+
+    
+    def set_shows_genres_urls(self, urls):
+        self.shows_genres_urls = urls
+
+
     def set_genres_from_html(self):
         genre_list = []
         html = self.get_html(self.MOVIE_SHOWS_GENRES_URL)
@@ -113,8 +141,8 @@ class Scraper:
                 genre_list.append(genre_url)
             else:
                 break
-        self.movie_genres_urls = genre_list[:24]
-        self.shows_genres_urls = genre_list[24:]
+        self.set_movie_genres_urls(genre_list[:24])
+        self.set_shows_genres_urls(genre_list[24:])
         return genre_list
 
 
@@ -132,15 +160,19 @@ class Scraper:
                 title_href = title.a['href']
                 imdb_id = title_href.split('/')[2]
                 imdb_id_list.append(imdb_id)
-            self.movie_genres_two[genre] = imdb_id_list
-        return self.movie_genres_two
+            self.movie_genres_imdb_ids[genre] = imdb_id_list
+        return self.movie_genres_imdb_ids
     
     
+    def set_movie_genres_object(self, movie_title, url):
+        self.movie_genres[movie_title] = url
+
+
     def get_genre_names_from_urls(self, title_urls):
         titles = []
         for title in title_urls:
             split_title = title.split('=')[1].split('&')[0]
             if split_title in self.important_movies:
-                self.movie_genres[split_title] = title
+                self.set_movie_genres_object(split_title, title)
                 titles.append(split_title)
         return titles
