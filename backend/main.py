@@ -7,7 +7,7 @@ import sys, requests
 
 from models.Omdb import Omdb
 from models.Scraper import Scraper
-from database.resourceModels.Search import Search, get_search
+from database.resourceModels.Search import Search
 from database.helpers.Data import DataHelper
 
 
