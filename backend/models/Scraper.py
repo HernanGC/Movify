@@ -16,7 +16,7 @@ class Scraper:
 
 
     def __init__(self):
-        self.attrs                 = {'first_attrs': {'class': 'titleColumn'}, 'second_attrs': {'class': 'lister-item-header'}}
+        self.attrs                 = {'titleColumn': {'class': 'titleColumn'}, 'lister-item-header': {'class': 'lister-item-header'}}
         # The "important" movie genres that will be scraped and later rendered in the front end. Might change in the future
         self.important_movies      = ['action', 'adventure', 'comedy', 'documentary', 'family', 'sci-fi', 'thriller', 'western']
         # Top 250 movies scraped from "chart/top/?ref_=nv_mv_250". Set by: "set_top_250_movies()"
@@ -48,7 +48,7 @@ class Scraper:
         - Current most popular Tv Shows (top 100)
         - Movies by genres (50 by genre)
         - Tv Shows by genres (50 by genre)
-        This ids will later be used to get data from each film from the omdbAPI
+        These ids will later be used to get data from each film from the omdbAPI
         '''
         self.set_most_popular_movies()
         self.set_most_popular_shows()
@@ -91,21 +91,27 @@ class Scraper:
 
     def get_top_250(self, url):
         html_doc = self.get_html(url)
-        top_250_id_list = self.get_imdb_id_from_html(html_doc, self.attrs['first_attrs'])
+        top_250_id_list = self.get_imdb_id_from_html(html_doc, self.attrs['titleColumn'])
         return top_250_id_list
 
 
     def get_most_popular(self, url):
             html_doc = self.get_html(url)
-            most_popular_id_list = self.get_imdb_id_from_html(html_doc, self.attrs['first_attrs'])
+            most_popular_id_list = self.get_imdb_id_from_html(html_doc, self.attrs['titleColumn'])
             return most_popular_id_list
 
 
     def get_html(self, search_url):
+        '''
+        Returns the given url html document
+        '''
         return requests.get(self.BASE_URL+search_url).text
 
     
     def get_imdb_id_from_html(self, html_doc, attrs):
+        '''
+        Returns a list of imdb_id's from the given html document that match the given attributes.
+        '''
         imdb_id_list = []
         try:
             curr_attrs = attrs
@@ -121,19 +127,29 @@ class Scraper:
 
 
     def set_movie_genres_urls(self, urls):
+        '''
+        Sets the movie genres urls
+        '''
         self.movie_genres_urls = urls
 
     
     def set_shows_genres_urls(self, urls):
+        '''
+        Sets the tv shows genres urls
+        '''
         self.shows_genres_urls = urls
 
 
     def set_genres_from_html(self):
+        '''
+        Gets and sets the urls for movie and tv shows genres
+        '''
         genre_list = []
         html = self.get_html(self.MOVIE_SHOWS_GENRES_URL)
         soup = BeautifulSoup(html, 'html.parser')
         genres = soup.find_all(attrs={'class': 'table-cell'})
         for index, genre in enumerate(genres):
+            # These html elements being skipped are repeated ones, therefor I skip them
             if genre in {genres[0], genres[7], genres[14], genres[21], genres[28], genres[36], genres[44], genres[52]}:
                 continue
             elif index < 59:
@@ -147,28 +163,47 @@ class Scraper:
 
 
     def get_genres_ids_from_html(self):
-        imdb_id_list = []
+        '''
+        Returns and sets the genres imdb_id's for each of the urls that were previously set in the "movie_genres" object by "set_genres_from_html()",
+        these urls will only be the ones that match the genres defined in the "important_movies" list.
+        '''
+        # I get ALL the movie urls that were previously loaded in the "movie_genres_urls" list
         urls_list = self.movie_genres_urls
+        # Filter them to get a resulting genres list and create a new object ("movie_genres") 
+        # which will contain => "genre": "url" only for those genres I want to
         movie_genre_titles = self.get_genre_names_from_urls(urls_list)
         for genre in movie_genre_titles:
-            imdb_id_list = []
-            url = self.movie_genres[genre]
+            imdb_id_list = [] # Each iteration this list begins empty
+            url = self.movie_genres[genre] # Get the url from the genre being iterated
             genre_html = self.get_html(url)
             soup = BeautifulSoup(genre_html, 'html.parser')
-            title_results = soup.find_all(attrs={'class': 'lister-item-header'})
-            for title in title_results:
-                title_href = title.a['href']
-                imdb_id = title_href.split('/')[2]
-                imdb_id_list.append(imdb_id)
-            self.movie_genres_imdb_ids[genre] = imdb_id_list
+            imdb_id_list = self.get_imdb_id_from_html(genre_html, self.attrs['lister-item-header'])
+            if imdb_id_list:
+                self.set_movie_genres_imdb_ids(genre, imdb_id_list)
         return self.movie_genres_imdb_ids
     
+
+
+    def set_movie_genres_imdb_ids(self, genre, imdb_id_list):
+        '''
+        Sets the "movie_genres_imdb_ids" object given genre as the key and the id list as the value.
+        '''
+        self.movie_genres_imdb_ids[genre] = imdb_id_list
+
     
     def set_movie_genres_object(self, movie_title, url):
+        '''
+        Sets the "movie_genres" object with the given attributes.
+        '''
         self.movie_genres[movie_title] = url
 
 
     def get_genre_names_from_urls(self, title_urls):
+        '''
+        Returns a list of genre names from the urls list given that match with the "important_movies" list. 
+        Also calls the function "set_movie_genres_object()" that the "movie_genres" object with the url and
+        the genre name as => "genre": "url".
+        '''
         titles = []
         for title in title_urls:
             split_title = title.split('=')[1].split('&')[0]
