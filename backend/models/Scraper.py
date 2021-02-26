@@ -27,7 +27,7 @@ class Scraper:
         self.most_popular_movies   = []
         # Top 100 popular tv shows scraped from "chart/tvmeter/?ref_=nv_tvv_mptv". Set by: "set_most_popular_shows() "
         self.most_popular_shows    = []
-        # Movie genres URLS scraped from "feature/genre/?ref_=nv_tv_gr". This sets around 50 Movie genres urls, and only 8 are actually used. Set by "set_movie_genres_urls()"
+        # Movie genres URLS scraped from "feature/genre/?ref_=nv_tv_gr". This sets around 50 Movie genres urls, only 8 are actually used. Set by "set_movie_genres_urls()"
         self.movie_genres_urls     = []
         # Tv Shows genres URLS scraped from "feature/genre/?ref_=nv_tv_gr". This sets around 50 Tv Shows genres urls. Set by "set_shows_genres_urls()"
         self.shows_genres_urls     = []
@@ -41,7 +41,7 @@ class Scraper:
 
     def init(self):
         '''
-        This function initiates the scraper and performs all the scraping needed in order to get the imdbIDs (from imdb.com) for:
+        This function initializes the scraper and performs all the scraping needed in order to get the imdbIDs (from imdb.com) for:
         - Historic Movie ranking (top 250)
         - Historic Tv Shows ranking (top 250)
         - Current most popular Movies (top 100)
@@ -102,21 +102,16 @@ class Scraper:
 
 
     def get_html(self, search_url):
-        '''
-        Returns the given url html document
-        '''
+        '''Returns the given url html document'''
         return requests.get(self.BASE_URL+search_url).text
 
     
     def get_imdb_id_from_html(self, html_doc, attrs):
-        '''
-        Returns a list of imdb_id's from the given html document that match the given attributes.
-        '''
+        '''Returns a list of imdb_id's from the given html document that match the given attributes.'''
         imdb_id_list = []
         try:
-            curr_attrs = attrs
             soup = BeautifulSoup(html_doc, 'html.parser')
-            title_results = soup.find_all(attrs=curr_attrs)
+            title_results = soup.find_all(attrs=attrs)
             for title in title_results:
                 title_href = title.a['href']
                 imdb_id = title_href.split('/')[2]
@@ -127,23 +122,17 @@ class Scraper:
 
 
     def set_movie_genres_urls(self, urls):
-        '''
-        Sets the movie genres urls
-        '''
+        '''Sets the movie genres urls'''
         self.movie_genres_urls = urls
 
     
     def set_shows_genres_urls(self, urls):
-        '''
-        Sets the tv shows genres urls
-        '''
+        '''Sets the tv shows genres urls'''
         self.shows_genres_urls = urls
 
 
     def set_genres_from_html(self):
-        '''
-        Gets and sets the urls for movie and tv shows genres
-        '''
+        '''Gets and sets the urls for movie and tv shows genres'''
         genre_list = []
         html = self.get_html(self.MOVIE_SHOWS_GENRES_URL)
         soup = BeautifulSoup(html, 'html.parser')
@@ -174,10 +163,10 @@ class Scraper:
         movie_genre_titles = self.get_genre_names_from_urls(urls_list)
         for genre in movie_genre_titles:
             imdb_id_list = [] # Each iteration this list begins empty
-            url = self.movie_genres[genre] # Get the url from the genre being iterated
+            url = self.movie_genres[genre] # Gets the url from the genre being iterated
             genre_html = self.get_html(url)
             soup = BeautifulSoup(genre_html, 'html.parser')
-            imdb_id_list = self.get_imdb_id_from_html(genre_html, self.attrs['lister-item-header'])
+            imdb_id_list = self.get_imdb_id_from_html(genre_html, self.attrs['lister-item-header']) # Gets a list of the imdb_ids
             if imdb_id_list:
                 self.set_movie_genres_imdb_ids(genre, imdb_id_list)
         return self.movie_genres_imdb_ids
@@ -185,16 +174,12 @@ class Scraper:
 
 
     def set_movie_genres_imdb_ids(self, genre, imdb_id_list):
-        '''
-        Sets the "movie_genres_imdb_ids" object given genre as the key and the id list as the value.
-        '''
+        '''Sets the "movie_genres_imdb_ids" object given genre as the key and the id list as the value.'''
         self.movie_genres_imdb_ids[genre] = imdb_id_list
 
     
     def set_movie_genres_object(self, movie_title, url):
-        '''
-        Sets the "movie_genres" object with the given attributes.
-        '''
+        '''Sets the "movie_genres" object with the given attributes.'''
         self.movie_genres[movie_title] = url
 
 
