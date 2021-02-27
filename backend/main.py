@@ -5,6 +5,8 @@ from flask_cors import CORS
 
 import sys, requests
 
+import json
+
 from models.Omdb import Omdb
 from models.Scraper import Scraper
 from database.resourceModels.Search import Search
@@ -52,12 +54,43 @@ def test_handler():
 
 @app.route('/api/test', methods=['GET', 'POST'])
 def test():
-    SCRAPER.init()
+    res_data = get_json_file_data()
+    if not res_data:
+        SCRAPER.init()
+        write_to_file = {}
+        write_to_file['top_movies'] = SCRAPER.get_top_movies()
+        write_to_file['top_shows'] = SCRAPER.get_top_shows()
+        write_to_file['popular_movies'] = SCRAPER.get_most_popular_movies()
+        write_to_file['popular_shows'] = SCRAPER.get_most_popular_shows()
+        write_to_file['movies_by_genre'] = SCRAPER.get_genres_ids_from_html()
+        set_json_file_data(write_to_file)
+        res_data = get_json_file_data()
+    set_data(res_data)
     return {
-        'top_movies': SCRAPER.get_top_movies(10),
-        'top_shows': SCRAPER.get_top_shows(10),
-        'popular_movies': SCRAPER.get_most_popular_movies(10),
-        'popular_shows': SCRAPER.get_most_popular_shows(10),
-        'movies_by_genre': SCRAPER.get_genres_ids_from_html()
+        'data': res_data,
+        'data-2': SCRAPER.get_most_popular_movies()
     }
 
+
+# TODO: Mover esto
+def set_json_file_data(data: dict) -> None:
+    with open('movies.txt', 'w') as json_file:
+        json.dump(data, json_file)
+
+def get_json_file_data() -> dict:
+    try:
+        with open('movies.txt') as json_file:
+            return json.load(json_file)
+    except:
+        return {}
+
+def set_data(data_dict: dict) -> bool:
+    try:
+        SCRAPER.set_movie_genres_imdb_ids_obj(data_dict['movies_by_genre'])
+        SCRAPER.set_most_popular_movies(data_dict['popular_movies'])
+        SCRAPER.set_most_popular_shows(data_dict['popular_shows'])
+        SCRAPER.set_top_250_movies(data_dict['top_movies'])
+        SCRAPER.set_top_250_shows(data_dict['top_shows'])
+        return True
+    except:
+        return False
