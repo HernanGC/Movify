@@ -53,17 +53,13 @@ class Omdb:
     
     # Testing functions
     
-    def test_request_movie(self, movie_name):
-        '''
-        Get search results
-        '''
+    def test_request_movie(self, movie_name: str) -> dict:
+        '''Get search results'''
         return requests.get(f'{self.base_url}s={movie_name}&apikey={self.api_key}').json()
 
 
-    def test_request_details(self, movie_id):
-        '''
-        Get details result
-        '''
+    def test_request_details(self, movie_id: str) -> dict:
+        '''Get details result'''
         return requests.get(f'{self.base_url}i={movie_id}&apikey={self.api_key}').json()
 
 

@@ -1,6 +1,7 @@
 import requests
 import re
 import time
+from typing import Union
 from bs4 import BeautifulSoup
 # from .Request import RequestModel
 
@@ -39,7 +40,7 @@ class Scraper:
         self.movie_genres_imdb_ids = {}
          
 
-    def init(self):
+    def init(self) -> None:
         '''
         This function initializes the scraper and performs all the scraping needed in order to get the imdbIDs (from imdb.com) for:
         - Historic Movie ranking (top 250)
@@ -57,56 +58,56 @@ class Scraper:
         self.set_genres_from_html()
 
 
-    def set_top_250_movies(self, top=250):
+    def set_top_250_movies(self, top: int = 250) -> None:
         self.top_250_movies = self.get_top_250(self.TOP_250_MOVIES_URL)
 
     
-    def set_top_250_shows(self, top=250):
+    def set_top_250_shows(self, top: int = 250) -> None:
         self.top_250_shows = self.get_top_250(self.TOP_250_SHOWS_URL)
 
 
-    def set_most_popular_movies(self, top=100):
+    def set_most_popular_movies(self, top: int = 100) -> None:
         self.most_popular_movies = self.get_most_popular(self.MOST_POPULAR_MOVIES_URL)
 
 
-    def set_most_popular_shows(self, top=100):
+    def set_most_popular_shows(self, top: int = 100) -> None:
         self.most_popular_shows = self.get_most_popular(self.MOST_POPULAR_SHOWS_URL)
 
 
-    def get_top_movies(self, top):
+    def get_top_movies(self, top: int) -> list:
         return self.top_250_movies[:top]
 
 
-    def get_top_shows(self, top):
+    def get_top_shows(self, top: int) -> list:
         return self.top_250_shows[:top]
 
 
-    def get_most_popular_movies(self, top):
+    def get_most_popular_movies(self, top: int) -> list:
         return self.most_popular_movies[:top]
 
 
-    def get_most_popular_shows(self, top):
+    def get_most_popular_shows(self, top: int) -> list:
         return self.most_popular_shows[:top]        
 
 
-    def get_top_250(self, url):
+    def get_top_250(self, url: str) -> list:
         html_doc = self.get_html(url)
         top_250_id_list = self.get_imdb_id_from_html(html_doc, self.attrs['titleColumn'])
         return top_250_id_list
 
 
-    def get_most_popular(self, url):
+    def get_most_popular(self, url: str) -> list:
             html_doc = self.get_html(url)
             most_popular_id_list = self.get_imdb_id_from_html(html_doc, self.attrs['titleColumn'])
             return most_popular_id_list
 
 
-    def get_html(self, search_url):
+    def get_html(self, search_url: str) -> str:
         '''Returns the given url html document'''
         return requests.get(self.BASE_URL+search_url).text
 
     
-    def get_imdb_id_from_html(self, html_doc, attrs):
+    def get_imdb_id_from_html(self, html_doc: str, attrs: dict) -> Union[list, bool]:
         '''Returns a list of imdb_id's from the given html document that match the given attributes.'''
         imdb_id_list = []
         try:
@@ -121,17 +122,17 @@ class Scraper:
             return False
 
 
-    def set_movie_genres_urls(self, urls):
+    def set_movie_genres_urls(self, urls: list) -> None:
         '''Sets the movie genres urls'''
         self.movie_genres_urls = urls
 
     
-    def set_shows_genres_urls(self, urls):
+    def set_shows_genres_urls(self, urls: list) -> None:
         '''Sets the tv shows genres urls'''
         self.shows_genres_urls = urls
 
 
-    def set_genres_from_html(self):
+    def set_genres_from_html(self) -> list:
         '''Gets and sets the urls for movie and tv shows genres'''
         genre_list = []
         html = self.get_html(self.MOVIE_SHOWS_GENRES_URL)
@@ -151,7 +152,7 @@ class Scraper:
         return genre_list
 
 
-    def get_genres_ids_from_html(self):
+    def get_genres_ids_from_html(self) -> dict:
         '''
         Returns and sets the genres imdb_id's for each of the urls that were previously set in the "movie_genres" object by "set_genres_from_html()",
         these urls will only be the ones that match the genres defined in the "important_movies" list.
@@ -173,17 +174,17 @@ class Scraper:
     
 
 
-    def set_movie_genres_imdb_ids(self, genre, imdb_id_list):
+    def set_movie_genres_imdb_ids(self, genre: str, imdb_id_list: str) -> None:
         '''Sets the "movie_genres_imdb_ids" object given genre as the key and the id list as the value.'''
         self.movie_genres_imdb_ids[genre] = imdb_id_list
 
     
-    def set_movie_genres_object(self, movie_title, url):
+    def set_movie_genres_object(self, movie_title: str, url:str ) -> None:
         '''Sets the "movie_genres" object with the given attributes.'''
         self.movie_genres[movie_title] = url
 
 
-    def get_genre_names_from_urls(self, title_urls):
+    def get_genre_names_from_urls(self, title_urls: list) -> list:
         '''
         Returns a list of genre names from the urls list given that match with the "important_movies" list. 
         Also calls the function "set_movie_genres_object()" that the "movie_genres" object with the url and
