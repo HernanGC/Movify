@@ -1,14 +1,15 @@
 import requests
 import json
 
+from .Scraper import Scraper
 from database.resourceModels.Search import Search
 from database.base import sess
 
 
-class Omdb:
+class Omdb(Scraper):
 
 
-    API_KEY = 'dffc746e'
+    API_KEY  = 'dffc746e'
     BASE_URL = 'http://www.omdbapi.com/?'
  
 
