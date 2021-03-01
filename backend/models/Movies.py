@@ -19,11 +19,11 @@ class Movies(Omdb):
         self.movie_data[key] = value
 
     
-    def get_data(self, key) -> dict:
+    def get_data(self, key) -> Union[str, list, dict]:
         return self.movie_data[key]
 
 
-    def get_movie_or_show(self, imdb_id):
+    def get_movie_by_imdb_id(self, imdb_id: str) -> dict:
         return self.get_by_imdb_id(self, imdb_id)
 
 
