@@ -17,27 +17,27 @@ class Scraper:
 
 
     def __init__(self):
-        self.attrs                 = {'titleColumn': {'class': 'titleColumn'}, 'lister-item-header': {'class': 'lister-item-header'}}
+        self.attrs: dict                 = {'titleColumn': {'class': 'titleColumn'}, 'lister-item-header': {'class': 'lister-item-header'}}
         # The "important" movie genres that will be scraped and later rendered in the front end. Might change in the future
-        self.important_movies      = ['action', 'adventure', 'comedy', 'documentary', 'family', 'sci-fi', 'thriller', 'western']
+        self.important_movies: list      = ['action', 'adventure', 'comedy', 'documentary', 'family', 'sci-fi', 'thriller', 'western']
         # Top 250 movies scraped from "chart/top/?ref_=nv_mv_250". Set by: "set_top_250_movies()"
-        self.top_250_movies        = []
+        self.top_250_movies: list        = []
         # Top 250 tv shows scraped from "hart/toptv/?ref_=nv_tvv_250". Set by: "set_top_250_shows()"
-        self.top_250_shows         = []
+        self.top_250_shows: list         = []
         # Top 100 popular movies scraped from "chart/moviemeter/?ref_=nv_mv_mpm". Set by: "set_most_popular_movies()"
-        self.most_popular_movies   = []
+        self.most_popular_movies: list   = []
         # Top 100 popular tv shows scraped from "chart/tvmeter/?ref_=nv_tvv_mptv". Set by: "set_most_popular_shows() "
-        self.most_popular_shows    = []
+        self.most_popular_shows: list    = []
         # Movie genres URLS scraped from "feature/genre/?ref_=nv_tv_gr". This sets around 50 Movie genres urls, only 8 are actually used. Set by "set_movie_genres_urls()"
-        self.movie_genres_urls     = []
+        self.movie_genres_urls: list     = []
         # Tv Shows genres URLS scraped from "feature/genre/?ref_=nv_tv_gr". This sets around 50 Tv Shows genres urls. Set by "set_shows_genres_urls()"
-        self.shows_genres_urls     = []
+        self.shows_genres_urls: list     = []
         # Object composed by "movie_name": "movie_url". Set by "set_movie_genres_object()" in "get_genre_names_from_urls()"
-        self.movie_genres          = {}
+        self.movie_genres: list          = {}
         # Object composed by "tv_show_name": "tv_show_url".
-        self.show_genres           = {}
+        self.show_genres: list           = {}
         # Object composed by "movie_genre": ["imdb_id_one", "imdb_id_two", "..."].
-        self.movie_genres_imdb_ids = {}
+        self.movie_genres_imdb_ids: dict = {}
          
 
     def init(self) -> None:

@@ -37,6 +37,10 @@ class Omdb(Scraper):
         '''
         return self.response
 
+    
+    def get_by_imdb_id(self, imdb_id):
+        return requests.get(f'{self.BASE_URL}i={imdb_id}&type=movie').json()
+
 
     def set_search_request(self, search, pages):
         '''
