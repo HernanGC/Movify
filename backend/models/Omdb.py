@@ -16,6 +16,7 @@ class Omdb(Scraper.Scraper):
         self.api_key = self.API_KEY
         self.base_url = self.BASE_URL
         self.response = []
+        super().__init__()
 
     
     def get_request(self, url):

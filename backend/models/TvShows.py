@@ -6,6 +6,7 @@ class TvShows(Omdb.Omdb):
 
     def __init__(self):
         self.shows_data: dict = {}
+        super().__init__()
 
 
     def set_show_data(self, show_data: dict) -> None:
@@ -26,3 +27,6 @@ class TvShows(Omdb.Omdb):
 
     def get_show_by_imdb_id(self, imdb_id: str) -> dict:
         return self.get_by_imdb_id(imdb_id)
+
+
+    # def load_shows(self):
