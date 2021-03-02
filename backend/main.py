@@ -9,6 +9,7 @@ import json
 
 from models.Omdb import Omdb
 from models.Scraper import Scraper
+from models.Movies import Movies
 from database.resourceModels.Search import Search
 from database.helpers.Data import DataHelper
 
@@ -18,14 +19,15 @@ CORS(app)
 
 
 OMDB = Omdb()
-SCRAPER = Scraper()
+# MOVIES = Scraper()
 DATA_HELPER = DataHelper()
+MOVIES = Movies()
 # SEARCH = Search()
 
 
 @app.route('/api/movify/v1/home', methods=['GET'])
 def home():
-    SCRAPER.init()
+    MOVIES.init()
     return {
         'data': 'to-do'
     }
@@ -56,41 +58,19 @@ def test_handler():
 def test():
     res_data = get_json_file_data()
     if not res_data:
-        SCRAPER.init()
+        MOVIES.init()
         write_to_file = {}
-        write_to_file['top_movies'] = SCRAPER.get_top_movies()
-        write_to_file['top_shows'] = SCRAPER.get_top_shows()
-        write_to_file['popular_movies'] = SCRAPER.get_most_popular_movies()
-        write_to_file['popular_shows'] = SCRAPER.get_most_popular_shows()
-        write_to_file['movies_by_genre'] = SCRAPER.get_genres_ids_from_html()
+        write_to_file['top_movies'] = MOVIES.get_top_movies()
+        write_to_file['top_shows'] = MOVIES.get_top_shows()
+        write_to_file['popular_movies'] = MOVIES.get_most_popular_movies()
+        write_to_file['popular_shows'] = MOVIES.get_most_popular_shows()
+        write_to_file['movies_by_genre'] = MOVIES.get_genres_ids_from_html()
         set_json_file_data(write_to_file)
         res_data = get_json_file_data()
     set_data(res_data)
     return {
         'data': res_data,
-        'data-2': SCRAPER.get_most_popular_movies()
+        'data-2': MOVIES.get_most_popular_movies(),
+        'movie_data': MOVIES.load_movies()
     }
 
-
-# TODO: Mover esto
-def set_json_file_data(data: dict) -> None:
-    with open('movies.txt', 'w') as json_file:
-        json.dump(data, json_file)
-
-def get_json_file_data() -> dict:
-    try:
-        with open('movies.txt') as json_file:
-            return json.load(json_file)
-    except:
-        return {}
-
-def set_data(data_dict: dict) -> bool:
-    try:
-        SCRAPER.set_movie_genres_imdb_ids_obj(data_dict['movies_by_genre'])
-        SCRAPER.set_most_popular_movies(data_dict['popular_movies'])
-        SCRAPER.set_most_popular_shows(data_dict['popular_shows'])
-        SCRAPER.set_top_250_movies(data_dict['top_movies'])
-        SCRAPER.set_top_250_shows(data_dict['top_shows'])
-        return True
-    except:
-        return False

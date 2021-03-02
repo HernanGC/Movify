@@ -5,7 +5,7 @@ class TvShows(Omdb):
 
 
     def __init__(self):
-        self.show_data: dict = {}
+        self.shows_data: dict = {}
 
 
     def set_show_data(self, show_data: dict) -> None:
