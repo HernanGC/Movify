@@ -1,7 +1,7 @@
 from typing import Union
-from .Omdb import Omdb
+from . import Omdb
 
-class Movies(Omdb):
+class Movies(Omdb.Omdb):
     
 
     def __init__(self):

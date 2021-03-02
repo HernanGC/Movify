@@ -1,12 +1,11 @@
 import requests
 import json
+from . import Scraper
+# from database.resourceModels.Search import Search
+# from database.base import sess
 
-from .Scraper import Scraper
-from database.resourceModels.Search import Search
-from database.base import sess
 
-
-class Omdb(Scraper):
+class Omdb(Scraper.Scraper):
 
 
     API_KEY  = 'dffc746e'

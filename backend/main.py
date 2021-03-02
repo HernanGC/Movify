@@ -1,15 +1,13 @@
-from flask import Flask
-from flask import request
-from flask import jsonify
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 
-import sys, requests
-
-import json
+import sys, requests, json
 
 from models.Omdb import Omdb
 from models.Scraper import Scraper
 from models.Movies import Movies
+from models.Proy import Main
+
 from database.resourceModels.Search import Search
 from database.helpers.Data import DataHelper
 
@@ -18,6 +16,7 @@ app = Flask(__name__)
 CORS(app)
 
 
+MAIN = Main()
 OMDB = Omdb()
 # MOVIES = Scraper()
 DATA_HELPER = DataHelper()
@@ -27,7 +26,7 @@ MOVIES = Movies()
 
 @app.route('/api/movify/v1/home', methods=['GET'])
 def home():
-    MOVIES.init()
+    MAIN.init()
     return {
         'data': 'to-do'
     }
@@ -56,7 +55,7 @@ def test_handler():
 
 @app.route('/api/test', methods=['GET', 'POST'])
 def test():
-    res_data = get_json_file_data()
+    res_data = MAIN.get_json_file_data()
     if not res_data:
         MOVIES.init()
         write_to_file = {}
@@ -66,7 +65,7 @@ def test():
         write_to_file['popular_shows'] = MOVIES.get_most_popular_shows()
         write_to_file['movies_by_genre'] = MOVIES.get_genres_ids_from_html()
         set_json_file_data(write_to_file)
-        res_data = get_json_file_data()
+        res_data = MAIN.get_json_file_data()
     set_data(res_data)
     return {
         'data': res_data,

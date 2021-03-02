@@ -1,7 +1,7 @@
 from typing import Union
-from .Omdb import Omdb
+from . import Omdb
 
-class TvShows(Omdb):
+class TvShows(Omdb.Omdb):
 
 
     def __init__(self):

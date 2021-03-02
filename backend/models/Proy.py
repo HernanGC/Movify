@@ -1,16 +1,16 @@
-from .Movies import Movies
-from .TvShows import TvShows
+from . import Movies, TvShows, Scraper
 
 
-class Main(Movies, TvShows):
+class Main(Movies.Movies, TvShows.TvShows):
 
 
-    def __init__():
+    def __init__(self):
+        self.data = {}
 
 
     def set_json_file_data(self, data: dict) -> None:
-    with open('movies.txt', 'w') as json_file:
-        json.dump(data, json_file)
+        with open('movies.txt', 'w') as json_file:
+            json.dump(data, json_file)
 
 
     def get_json_file_data(self) -> dict:
