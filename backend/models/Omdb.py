@@ -1,12 +1,11 @@
 import requests
 import json
+from . import Scraper
+# from database.resourceModels.Search import Search
+# from database.base import sess
 
-from .Scraper import Scraper
-from database.resourceModels.Search import Search
-from database.base import sess
 
-
-class Omdb(Scraper):
+class Omdb(Scraper.Scraper):
 
 
     API_KEY  = 'dffc746e'
@@ -17,6 +16,7 @@ class Omdb(Scraper):
         self.api_key = self.API_KEY
         self.base_url = self.BASE_URL
         self.response = []
+        super().__init__()
 
     
     def get_request(self, url):

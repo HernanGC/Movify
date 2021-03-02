@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 
 class Scraper:
 
-    BASE_URL                = 'https://www.imdb.com/'
+    BASE_SCRAPE_URL         = 'https://www.imdb.com/'
     MOVIE_SHOWS_GENRES_URL  = 'feature/genre/?ref_=nv_tv_gr'
     TOP_250_SHOWS_URL       = 'chart/toptv/?ref_=nv_tvv_250'
     TOP_250_MOVIES_URL      = 'chart/top/?ref_=nv_mv_250'
@@ -122,13 +122,17 @@ class Scraper:
 
     def get_most_popular(self, url: str) -> list:
             html_doc = self.get_html(url)
+            # print('coso1')
+            # print(html_doc)
             most_popular_id_list = self.get_imdb_id_from_html(html_doc, self.attrs['titleColumn'])
+            # print('COSSOOOO')
+            # print(most_popular_id_list)
             return most_popular_id_list
 
 
     def get_html(self, search_url: str) -> str:
         '''Returns the given url html document'''
-        return requests.get(self.BASE_URL+search_url).text
+        return requests.get(self.BASE_SCRAPE_URL+search_url).text
 
     
     def get_imdb_id_from_html(self, html_doc: str, attrs: dict) -> Union[list, bool]:
@@ -137,6 +141,8 @@ class Scraper:
         try:
             soup = BeautifulSoup(html_doc, 'html.parser')
             title_results = soup.find_all(attrs=attrs)
+            # print('coso2')
+            # print(title_results)
             for title in title_results:
                 title_href = title.a['href']
                 imdb_id = title_href.split('/')[2]
