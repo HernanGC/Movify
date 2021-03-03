@@ -26,10 +26,7 @@ MOVIES = Movies()
 
 @app.route('/api/movify/v1/home', methods=['GET'])
 def home():
-    MAIN.init()
-    return {
-        'data': 'to-do'
-    }
+    return MAIN.initializeF()
 
 @app.route('/api/movify/v1/search', methods=['GET', 'POST'])
 def search_handler():
@@ -55,7 +52,5 @@ def test_handler():
 
 @app.route('/api/test', methods=['GET', 'POST'])
 def test():
-    top_qty = int(request.args.get('top'))
-    popular_qty = int(request.args.get('popular'))
-    return MAIN.initializeF(top_qty, popular_qty)
+    return MAIN.initializeF()
 

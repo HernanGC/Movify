@@ -30,13 +30,14 @@ class Movies(Omdb.Omdb):
 
     
     def load_movies(self, top_movies_qty: int = 250, popular_movies_qty: int = 100):
+        # TODO: Hacer esto como la funcion load_tv_shows()
         top_movies = self.get_top_movies(top_movies_qty)
         popular_movies = self.get_most_popular_movies(popular_movies_qty)
         top_movies_list = []
         popular_movies_list = []
         for index, movie in enumerate(top_movies):
             top_movies_list.append(self.get_movie_by_imdb_id(movie))
-            if index < 100: popular_movies_list.append(self.get_movie_by_imdb_id(popular_movies[index]))
+            if index < 100: popular_movies_list.append(self.get_movie_by_imdb_id(popular_movies[index])) 
         self.movies_data['top_movies'] = top_movies_list
         self.movies_data['popular_movies'] = popular_movies_list
         return self.movies_data
