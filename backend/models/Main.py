@@ -15,7 +15,7 @@ class Main(Movies.Movies, TvShows.TvShows):
         super().__init__()
 
     
-    def initializeF(self, top_mv: int=15, popular_mv: int=15):
+    def initializeF(self, top_mv: int=15, popular_mv: int=15, popular_tv_shows: int = 15) -> dict:
         imdb_ids_data = self.get_json_file_data(self.IMDB_IDS_FILE)
         movie_details_data = self.handle_movies_json(self.get_json_file_data(self.MOVIES_DETAILS_FILE), top_mv, popular_mv)
         tv_shows_details_data = self.get_json_file_data(self.SHOWS_DETAILS_FILE)
@@ -27,8 +27,12 @@ class Main(Movies.Movies, TvShows.TvShows):
             movie_details_data = self.load_movies(top_mv, popular_mv)
             self.set_json_file_data(movie_details_data, self.MOVIES_DETAILS_FILE)
         self.set_movie_data(movie_details_data)
+        if not tv_shows_details_data:
+            tv_shows_details_data = self.load_tv_shows(popular_tv_shows)
+            self.set_json_file_data(tv_shows_details_data, self.SHOWS_DETAILS_FILE)
         return {
-            'movie_details': movie_details_data
+            'movie_details': movie_details_data,
+            'tv_shows': tv_shows_details_data
         }
 
 

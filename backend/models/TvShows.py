@@ -26,7 +26,10 @@ class TvShows(Omdb.Omdb):
 
 
     def get_show_by_imdb_id(self, imdb_id: str) -> dict:
-        return self.get_by_imdb_id(imdb_id)
+        return self.get_by_imdb_id(imdb_id, 'series')
 
 
-    # def load_shows(self):
+    def load_tv_shows(self, tv_shows_qty: int = 15) -> dict:
+        self.show_data = list(map(self.get_show_by_imdb_id, self.get_most_popular_shows(tv_shows_qty)))
+        return self.show_data
+        
